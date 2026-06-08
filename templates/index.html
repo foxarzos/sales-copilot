@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Lead scoring</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+
+        body {
+            background: #F8FAFC;
+            font-family: Arial, sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .navbar-brand {
+            color: #0F172A !important;
+            font-size: 20px;
+        }
+
+        /* CARDS */
+        .card {
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #F1F5F9;
+            border-radius: 16px 16px 0 0 !important;
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            background: #2563EB;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+        }
+
+        /* AI BADGE */
+        .badge-ai {
+            background: #DBEAFE;
+            color: #1D4ED8;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+
+        /* FORM */
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 1px solid #CBD5E1;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: none;
+            border-color: #2563EB;
+        }
+
+    </style>
+</head>
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm py-3">
+
+    <div class="container">
+
+        <!-- LOGO -->
+        <a href="/" class="navbar-brand d-flex align-items-center gap-2 fw-bold">
+
+            <svg width="34" height="34" viewBox="0 0 60 60">
+                <circle cx="20" cy="30" r="8"
+                        stroke="#38BDF8"
+                        stroke-width="3"
+                        fill="none"/>
+
+                <circle cx="40" cy="30" r="8"
+                        stroke="#22C55E"
+                        stroke-width="3"
+                        fill="none"/>
+
+                <line x1="28"
+                      y1="30"
+                      x2="32"
+                      y2="30"
+                      stroke="#2563EB"
+                      stroke-width="3"/>
+            </svg>
+
+            <span>SalesCopilot</span>
+
+        </a>
+
+        <!-- RIGHT SIDE -->
+        <div class="d-flex align-items-center gap-2 ms-auto">
+
+            <!-- USER -->
+            <span class="text-muted small me-2">
+                Přihlášený uživatel {{ current_user.id }}
+            </span>
+
+            <!-- LEADS -->
+            <a href="/leads"
+               class="btn btn-primary btn-sm px-3">
+
+                Moje leady
+
+            </a>
+
+            <!-- LOGOUT -->
+            <a href="/logout"
+               class="btn btn-outline-secondary btn-sm px-3">
+
+                Odhlásit
+
+            </a>
+            <a href="/landing" class="btn btn-outline-secondary btn-sm">
+                O produktu
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<body class="bg-light">
+
+<div class="container mt-2">
+
+    <div class="card shadow">
+
+
+        <div class="card-body">
+
+            <div class="row">
+
+                            <!-- 🟦 FORMULÁŘ (Políčka pod sebou + fixní akční tlačítko v rohu) -->
+            <div class="col-md-8">
+                <form method="POST">
+
+                    <!-- ID ZÁKAZNÍKA -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Příjmení zákazníka</label>
+                        <input type="text" name="client_name" class="form-control" placeholder="Zadejte příjmení zákazníka">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Vůz (Značka a Model)</label>
+                        <select name="car_selection" class="form-select" required>
+                            <option value="" selected disabled>Vyberte vůz...</option>
+
+                            <optgroup label="ŠKODA">
+                                <option value="Škoda|Fabia">Fabia</option>
+                                <option value="Škoda|Scala">Scala</option>
+                                <option value="Škoda|Kamiq">Kamiq</option>
+                                <option value="Škoda|Karoq">Karoq</option>
+                                <option value="Škoda|Octavia">Octavia</option>
+                                <option value="Škoda|Octavia">Octavia Combi</option>
+                                <option value="Škoda|Kodiaq">Kodiaq</option>
+                                <option value="Škoda|Superb">Superb</option>
+                                <option value="Škoda|Superb">Superb Combi</option>
+                                <option value="Škoda|Epiq">Epiq</option>
+                                <option value="Škoda|Elroq">Elroq</option>
+                                <option value="Škoda|Enyaq">Enyaq</option>
+                            </optgroup>
+
+                            <optgroup label="CUPRA">
+                                <option value="Cupra|Formentor">Formentor</option>
+                                <option value="Cupra|Leon">Leon</option>
+                                <option value="Cupra|Leon ST">Leon ST</option>
+                                <option value="Cupra|Ateca">Ateca</option>
+                                <option value="Cupra|Born">Born</option>
+                                <option value="Cupra|Terramar">Terramar</option>
+                                <option value="Cupra|Tavascan">Tavascan</option>
+                                <option value="Cupra|Raval">Raval</option>
+                            </optgroup>
+
+                            <optgroup label="SEAT">
+                                <option value="Seat|Ibiza">Ibiza</option>
+                                <option value="Seat|Arona">Arona</option>
+                                <option value="Seat|Leon">Leon</option>
+                                <option value="Seat|Leon">Leon ST</option>
+                                <option value="Seat|Ateca">Ateca</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- TYP KONTRAKTU -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Typ kontaktu</label>
+                        <select name="contract_type" class="form-select" required>
+                            <option value="" selected disabled>Vyberte typ kontaktu...</option>
+                            <option value="pise_mail">Píše e-mail / Webový formulář</option>
+                            <option value="jen_vola">Pouze telefonuje</option>
+                            <option value="navsteva_prodejny">Osobní návštěva prodejny</option>
+                        </select>
+                    </div>
+
+                    <!-- FÁZE VÝBĚRU -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Fáze výběru</label>
+                        <select name="selection_stage" class="form-select" required>
+                            <option value="" selected disabled>Vyberte fázi...</option>
+                            <option value="nevi_co_chce">Neví, co přesně chce</option>
+                            <option value="musi_budget">Musí se vejít do budgetu</option>
+                            <option value="porovnava_konkurenci">Porovnává s konkurencí</option>
+                            <option value="ma_vybrano">Má vybraný konkrétní model</option>
+                        </select>
+                    </div>
+
+                    <!-- ÚROVEŇ ZÁJMU -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Úroveň zájmu</label>
+                        <select name="interest_level" class="form-select" required>
+                            <option value="" selected disabled>Vyberte úroveň zájmu...</option>
+                            <option value="pta_se_na_detaily">Ptá se na technické detaily</option>
+                            <option value="testovaci_jizda">Má zájem o testovací jízdu</option>
+                            <option value="prohlizi_interier">Prohlíží si interiér</option>
+                            <option value="zustatkova_hodnota">Zajímá ho zůstatková hodnota</option>
+                            <option value="tco">Řeší celkové náklady na vlastnictví (TCO) - firmy</option>
+                        </select>
+                    </div>
+
+                    <!-- PŘIPRAVENOST KONFIGURACE -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Připravenost konfigurace</label>
+                        <select name="config" class="form-select" required>
+                            <option value="" selected disabled>Vyberte stav konfigurace...</option>
+                            <option value="bez_konfigurace">Zatím bez konfigurace</option>
+                            <option value="chce_poradit">Chce poradit s konfigurací od nuly</option>
+                            <option value="chce_doladit">Chce pouze doladit stávající konfiguraci</option>
+                            <option value="pripravena">Má připravenou hotovou konfiguraci</option>
+                        </select>
+                    </div>
+
+                    <!-- ROZPOČET -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Rozpočet</label>
+                        <select name="budget" class="form-select" required>
+                            <option value="" selected disabled>Vyberte stav rozpočtu...</option>
+                            <option value="nedostatecnony">Nedostatečný (chce model mimo možnosti)</option>
+                            <option value="presne_definovany">Přesně definovaný rozpočet</option>
+                            <option value="realny_rezerva">Reálný rozpočet s rezervou</option>
+                            <option value="pripraven_financovat">Předem schválen financovat</option>
+                        </select>
+                    </div>
+
+                    <!-- FINANCOVÁNÍ -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Způsob financování</label>
+                        <select name="finance" class="form-select" required>
+                            <option value="" selected disabled>Vyberte financování...</option>
+                            <option value="hotovost">Hotovost</option>
+                            <option value="klasicky_uver">Klasický úvěr</option>
+                            <option value="operativni_leasing">Operativní leasing</option>
+                            <option value="firem_flotila">Firemní flotila</option>
+                        </select>
+                    </div>
+
+                    <!-- ČASOVÝ HORIZONT -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Timing</label>
+                        <select name="timing" class="form-select" required>
+                            <option value="" selected disabled>Kdy chce vůz?...</option>
+                            <option value="jen_se_divam">Jen se dívá / zjišťuje</option>
+                            <option value="pristi_rok">6 a více měsíců</option>
+                            <option value="do_3_mesicu">Do 3 měsíců</option>
+                            <option value="chci_ihned">Chce auto ihned (skladovku)</option>
+                        </select>
+                    </div>
+
+                    <!-- DOSTUPNOST MODELU -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Dostupnost modelu</label>
+                        <select name="availability" class="form-select" required>
+                            <option value="" selected disabled>Dostupnost vozu?...</option>
+                            <option value="dlouha_lhuta">Dlouhá čekací lhůta (6+ měs.)</option>
+                            <option value="bezna_lhuta">Běžná čekací lhůta (do 3 měs.)</option>
+                            <option value="skladovy_vuz">Skladový vůz (ihned)</option>
+                        </select>
+                    </div>
+
+                    <!-- 🚀 PLOVOUCÍ FIXNÍ TLAČÍTKO V ROHU OBRAZOVKY -->
+                    <!-- Bude neustále vidět v pravém dolním rohu, s mírným odstupem (index 1050 zaručí překrytí obsahu) -->
+                    <div class="position-fixed" style="bottom: 25px; right: 25px; z-index: 1050;">
+                        <button type="submit" class="btn btn-primary fw-bold px-4 py-3 rounded-pill shadow-lg d-flex align-items-center gap-2" style="border: 2px solid #fff;">
+                            <span>⚡ Vyhodnotit lead</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+                <!-- 🟩 PREMIUM CRM SIDEBAR -->
+                <div class="col-md-4 position-sticky" style="top: 20px;">
+                    {% if status %}
+
+                        <!-- KARTA 1: PŘEHLED LEADU (Základní KPI z CRM) -->
+                        <div class="card shadow-sm border-0 mb-3 bg-white rounded-3 overflow-hidden">
+                            <!-- Barevný indikátor na horní hraně karty podle statusu -->
+                            <div style="height: 4px;" class="{% if status == 'HOT' %}bg-success{% elif status == 'WARM' %}bg-warning{% else %}bg-secondary{% endif %}"></div>
+
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted small fw-bold text-uppercase tracking-wider">Skóre kontraktu</span>
+                                    <!-- Moderní status tag s tečkou -->
+                                    <span class="d-inline-flex align-items-center px-2.5 py-0.5 rounded-pill small fw-bold
+                                        {% if status == 'HOT' %}bg-success-subtle text-success{% elif status == 'WARM' %}bg-warning-subtle text-warning-dark{% else %}bg-light text-secondary{% endif %}"
+                                        style="font-size: 0.8rem; padding: 4px 10px; border: 1px solid currentColor;">
+                                        <span class="p-1 rounded-circle me-1.5 d-inline-block {% if status == 'HOT' %}bg-success{% elif status == 'WARM' %}bg-warning{% else %}bg-secondary{% endif %}" style="width: 6px; height: 6px; margin-right: 6px;"></span>
+                                        {{ status }} Lead
+                                    </span>
+                                </div>
+
+                                <!-- Velký digitální ukazatel pravděpodobnosti -->
+                                <div class="text-center py-2">
+                                    <h2 class="display-5 fw-bold text-dark mb-0">{{ score }}<span class="fs-3 text-muted">%</span></h2>
+                                    <p class="text-muted small mb-0 mt-1">Pravděpodobnost uzavření obchodu</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KARTA 2: GLOBÁLNÍ STRATEGIE (Doporučení pevně podle statusu) -->
+                        <div class="card shadow-sm border-0 mb-3 bg-white rounded-3">
+                            <div class="card-body p-3">
+                                <h6 class="text-muted small fw-bold text-uppercase mb-2">🎯 Hlavní obchodní strategie</h6>
+                                <div class="p-2 rounded-2 {% if status == 'HOT' %}bg-success-subtle text-dark{% elif status == 'WARM' %}bg-warning-subtle text-dark{% else %}bg-light text-dark{% endif %}">
+                                    {% if status == "HOT" %}
+                                        <p class="mb-0 small fw-semibold">🔥 <b>Uzavřít obchod:</b> Klient vykazuje maximální zájem. Postupujte k uzavření obchodu.</p>
+                                    {% elif status == "WARM" %}
+                                        <p class="mb-0 small fw-semibold">🟡 <b>Odstranit bariéry:</b> Klient váhá nebo porovnává. Klíčem je zúžit výběr na jeden oblíbený model a vyřešit způsob financování.</p>
+                                    {% else %}
+                                        <p class="mb-0 small fw-semibold">❄️ <b>Budovat vztah:</b> Zákazník je v rané fázi. Netlačte na prodej, posílejte zajímavé materiály a udržujte kontakt v dlouhodobém horizontu.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KARTA 3: AKČNÍ PRODEJNÍ TIPY (Interaktivní widget měnitelný tlačítkem) -->
+                        <div class="card shadow-sm border-0 mb-3 bg-white rounded-3">
+                        <!-- Decentní horní lišta bez šedého podkladu, čistě oddělená tenkou linkou -->
+                        <div class="card-header bg-white border-bottom border-light py-2.5 px-3 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fs-6">⚡</span>
+                                <span class="fw-bold text-dark small text-uppercase tracking-wider" style="font-size: 0.75rem; letter-spacing: 0.5px;">Kontextové tipy a věty</span>
+                            </div>
+
+                            <span id="tip-counter" class="badge bg-white text-secondary rounded-pill border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 600;">1 / 1</span>
+                        </div>
+
+                        <div class="card-body p-3">
+
+                            <div class="p-3 bg-light rounded-3 d-flex align-items-center text-dark" style="min-height: 110px; border: 1px solid rgba(0,0,0,0.03);">
+
+                                <div id="tip-text-container" class="w-100" style="font-size: 0.95rem; line-height: 1.5; font-weight: 400;">
+                                    Načítání prodejních kroků...
+                                </div>
+                            </div>
+
+                            <!-- Hlavní akční tlačítko s větším detailem a moderním hover efektem -->
+                            <button id="next-tip-btn" class="btn btn-dark w-100 mt-3 btn-sm fw-bold rounded-2 py-2 text-uppercase tracking-wide" style="font-size: 0.75rem; letter-spacing: 0.5px;" type="button">
+                                Zobrazit další tip ▶
+                            </button>
+                        </div>
+                    </div>
+
+                        <!-- Tlačítko pro vyčištění a nový začátek -->
+                        <a href="/" class="btn btn-link text-secondary text-decoration-none w-100 text-center small py-2">
+                            Začít vytvářet nový lead
+                        </a>
+
+
+                        <!-- 🚨 INTERAKTIVNÍ JAVASCRIPT ENGINE (Bezpečná Jinja2 syntaxe bez chyb) -->
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                let tips = [];
+
+                                // 1. Import specifických kroků z Pythonu (protiúčet, konfigurace...)
+                                {% for krok in doporuceni %}
+                                    tips.push('{{ krok | safe }}');
+                                {% endfor %}
+
+                                // 2. Import přesných prodejních frází podle aktuálního CRM statusu
+                                {% if status == "COLD" %}
+                                    tips.push("💬 <b>Otevřená otázka:</b> „Jaké auto máte teď a co byste na něm chtěl vylepšit?“");
+                                    tips.push("💬 <b>Zjištění motivace:</b> „Co vás přimělo začít se po novém autě poohlížet právě teď?“");
+                                    tips.push("💡 <b>Tip pro prodejce:</b> Klient spíše nasává informace. Zjistěte jeho životní styl, abyste později vybrali ideální vůz.");
+                                {% elif status == "WARM" %}
+                                    tips.push("💬 <b>Zúžení preferencí:</b> „Je pro vás důležitější maximální komfort na dlouhé cesty, nebo nízké provozní náklady?“");
+                                    tips.push("💬 <b>Srovnání:</b> „Mám vám připravit srovnání dvou konkrétních variant vedle sebe, abychom viděli rozdíl ve výbavě?“");
+                                    tips.push("💬 <b>Konkurenční boj:</b> „Včera jste zmínil nabídku od konkurence, v čem přesně vám jejich specifikace přišla zajímavá?“");
+                                    tips.push("💡 <b>Tip pro prodejce:</b> Pomozte klientovi udělat rozhodnutí. Nabídněte mu fixní termín, do kdy pro něj rezervujete konkrétní model.");
+                                {% elif status == "HOT" %}
+                                    tips.push("💬 <b>Otázka na uzavření:</b> „Chcete vůz řešit v hotovosti, nebo se podíváme na kalkulaci úvěru či operativního leasingu?“");
+                                    tips.push("💬 <b>Argument skladovky:</b> „Tento vůz máme fyzicky skladem. Pokud se dnes domluvíme, dokážeme ho připravit k předání do X dní.“");
+                                    tips.push("💬 <b>Výbava na závěr:</b> „Ponecháme v objednávce přesně tuto konfiguraci, nebo tam ještě doplníme střešní okno či zimní sadu kol?“");
+                                    tips.push("💡 <b>Tip pro prodejce:</b> Používejte techniku volby A/B (Chcete schůzku ve středu, nebo ve čtvrtek?). Nedávejte prostor pro obecné odmítnutí.");
+                                {% endif %}
+
+                                let currentIdx = 0;
+                                const textContainer = document.getElementById("tip-text-container");
+                                const counter = document.getElementById("tip-counter");
+                                const btn = document.getElementById("next-tip-btn");
+
+                                function updateTip() {
+                                    if (tips.length === 0) {
+                                        textContainer.innerHTML = "Žádná další specifická doporučení.";
+                                        counter.innerText = "0 / 0";
+                                        btn.style.display = "none";
+                                        return;
+                                    }
+                                    textContainer.innerHTML = tips[currentIdx];
+                                    counter.innerText = (currentIdx + 1) + " / " + tips.length;
+                                }
+
+                                btn.addEventListener("click", function() {
+                                    currentIdx = (currentIdx + 1) % tips.length;
+                                    updateTip();
+                                });
+
+                                updateTip();
+                            });
+                        </script>
+
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

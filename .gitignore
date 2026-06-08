@@ -1,0 +1,25 @@
+# 1. Tajné klíče a konfigurace
+.env
+.env.local
+config.local.py
+users.json
+
+# 2. Lokální databáze (SQLite)
+*.db
+*.sqlite3
+instance/
+
+# 3. Cache a dočasné soubory Pythonu
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 4. Virtuální prostředí
+venv/
+.venv/
+env/
+
+# 5. Nastavení editoru (PyCharm / VS Code)
+.idea/
+.vscode/

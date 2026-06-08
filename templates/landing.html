@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>SalesCopilot</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #F8FAFC;
+            font-family: Arial, sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 20px;
+            color: #0F172A;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 80px 0;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0F172A;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #475569;
+        }
+
+        /* CARD */
+        .feature-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            background: white;
+            padding: 20px;
+            height: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #0F172A;
+        }
+
+        /* BUTTON */
+        .btn-primary {
+            background: #2563EB;
+            border: none;
+            padding: 10px 18px;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+        }
+
+        .btn-outline {
+            border: 1px solid #CBD5E1;
+            color: #0F172A;
+        }
+
+        .btn-outline:hover {
+            background: #F1F5F9;
+        }
+
+        /* BADGE */
+        .badge-ai {
+            background: #DBEAFE;
+            color: #1D4ED8;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a href="/" class="navbar-brand d-flex align-items-center gap-2 fw-bold">
+
+            <svg width="34" height="34" viewBox="0 0 60 60">
+
+                <circle cx="20" cy="30" r="8"
+                        stroke="#38BDF8"
+                        stroke-width="3"
+                        fill="none"/>
+
+                <circle cx="40" cy="30" r="8"
+                        stroke="#22C55E"
+                        stroke-width="3"
+                        fill="none"/>
+
+                <line x1="28"
+                      y1="30"
+                      x2="32"
+                      y2="30"
+                      stroke="#2563EB"
+                      stroke-width="3"/>
+
+            </svg>
+
+            <span class="brand">SalesCopilot</span>
+
+        </a>
+
+        <!-- LOGIN BUTTON -->
+        <a href="/login" class="btn btn-primary btn-sm">
+            Přihlásit se
+        </a>
+
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="container hero text-center">
+
+    <span class="badge-ai mb-3 d-inline-block">
+        AI Sales Assistant
+    </span>
+
+    <h1>
+        Proměň leady na obchody pomocí AI
+    </h1>
+
+    <p class="mt-3">
+        SalesCopilot analyzuje chování zákazníků, skóruje leady a navrhuje přesné prodejní věty,
+        které zvyšují prodeje.
+    </p>
+
+    <a href="/login" class="btn btn-primary mt-3">
+        Spustit aplikaci
+    </a>
+
+</div>
+
+<!-- FEATURES -->
+<div class="container mt-5">
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h5 class="feature-title">📊 AI Lead Scoring</h5>
+                <p>Automatické vyhodnocení kvality leadu podle chování zákazníka.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h5 class="feature-title">🧠 Prodejní doporučení</h5>
+                <p>AI generuje věty a scénáře přesně podle fáze zákazníka.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h5 class="feature-title">⚡ Prioritizace leadů</h5>
+                <p>Okamžitě víš, jaký lead je HOT, WARM nebo COLD.</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
