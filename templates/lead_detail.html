@@ -4,211 +4,255 @@
     <meta charset="UTF-8">
     <title>Detail leadu</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-
+        /* Vynutí scrollbar, aby neodskakovalo logo */
+        html {
+            overflow-y: scroll;
+        }
         body {
             background: #F8FAFC;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+            color: #0F172A;
         }
 
         .navbar {
-            border-bottom: 1px solid #E2E8F0;
+            background: white !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+            padding-top: 12px !important;
+            padding-bottom: 12px !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
         }
 
         .navbar-brand {
+            font-size: 18px !important;
+            font-weight: 700 !important;
             color: #0F172A !important;
-            font-size: 20px;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
-        .btn-primary {
-            background: #2563EB;
-            border: none;
+        .navbar .btn {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            padding: 6px 14px !important;
+            border-radius: 8px !important;
         }
 
-        .btn-primary:hover {
-            background: #1D4ED8;
-        }
-
+        /* DETAIL CARD CLEAN ARCHITECTURE */
         .detail-card {
             background: white;
-            border-radius: 16px;
-            border: none;
+            border-radius: 24px;
+            border: 1px solid #E2E8F0;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+            box-shadow: 0 12px 40px rgba(15, 23, 42, 0.04);
         }
 
         .detail-header {
-            background: linear-gradient(135deg, #2563EB, #38BDF8);
-            color: white;
-            padding: 30px;
+            background: #FFF;
+            border-bottom: 1px solid #E2E8F0;
+            padding: 32px;
         }
 
+        .lead-id-title {
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+
+        /* Info boxy */
         .info-box {
-            background: #F8FAFC;
+            background: #ffffff;
             border: 1px solid #E2E8F0;
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px;
             height: 100%;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .info-box:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.04), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+            transform: translateY(-2px);
         }
 
         .info-label {
             color: #64748B;
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .info-value {
-            font-weight: 600;
+            font-weight: 700;
             color: #0F172A;
+            font-size: 16px;
         }
 
         .progress {
-            height: 12px;
+            height: 10px;
             border-radius: 10px;
+            background-color: #F1F5F9;
         }
 
         .section-title {
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.3px;
+        }
+
+        /* Badges */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
             font-weight: 700;
+            border-radius: 8px;
+            letter-spacing: -0.1px;
+        }
+
+        /* STAV */
+        .status-hot {
+            background-color: #FEE2E2;
+            color: #DC2626;
+            border: 1px solid #FCA5A5;
+        }
+        .status-warm {
+            background-color: #FFEDD5;
+            color: #D97706;
+            border: 1px solid #FDBA74;
+        }
+        .status-cold {
+            background-color: #E0F2FE;
+            color: #0284C7;
+            border: 1px solid #7DD3FC;
+        }
+
+        /* VÝSLEDEK */
+        .outcome-won {
+            background-color: #DCFCE7;
+            color: #16A34A;
+            border: 1px solid #86EFAC;
+        }
+        .outcome-lost {
+            background-color: #F3F4F6;
+            color: #4B5563;
+            border: 1px solid #D1D5DB;
+        }
+        .outcome-pending {
+            background-color: #F3E8FF;
+            color: #7C3AED;
+            border: 1px solid #C084FC;
+        }
+
+        /* Actions Custom */
+        .btn-outline-secondary-custom {
+            border: 1px solid #CBD5E1;
+            color: #475569;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px 20px;
+        }
+        .btn-outline-secondary-custom:hover {
+            background: #F1F5F9;
             color: #0F172A;
         }
 
+        .btn-success-custom {
+            background: #10B981;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px 24px;
+        }
+        .btn-success-custom:hover { background: #059669; }
+
+        .btn-danger-custom {
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px 24px;
+        }
+        .btn-danger-custom:hover { background: #DC2626; }
+
     </style>
-
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm py-3">
+<nav class="navbar navbar-expand-lg">
+    <div class="container d-flex justify-content-between align-items-center">
 
-    <div class="container">
-
-        <!-- LOGO -->
-        <a href="/"
-           class="navbar-brand d-flex align-items-center gap-2 fw-bold">
-
+        <a href="/" class="navbar-brand d-flex align-items-center gap-2">
             <svg width="34" height="34" viewBox="0 0 60 60">
-
-                <circle cx="20"
-                        cy="30"
-                        r="8"
-                        stroke="#38BDF8"
-                        stroke-width="3"
-                        fill="none"/>
-
-                <circle cx="40"
-                        cy="30"
-                        r="8"
-                        stroke="#22C55E"
-                        stroke-width="3"
-                        fill="none"/>
-
-                <line x1="28"
-                      y1="30"
-                      x2="32"
-                      y2="30"
-                      stroke="#2563EB"
-                      stroke-width="3"/>
-
+                <circle cx="20" cy="30" r="8" stroke="#38BDF8" stroke-width="3" fill="none"/>
+                <circle cx="40" cy="30" r="8" stroke="#22C55E" stroke-width="3" fill="none"/>
+                <line x1="28" y1="30" x2="32" y2="30" stroke="#2563EB" stroke-width="3"/>
             </svg>
-
             <span>SalesCopilot</span>
-
         </a>
 
-        <!-- RIGHT SIDE -->
         <div class="d-flex align-items-center gap-2 ms-auto">
-
             <span class="text-muted small me-2">
                 Přihlášený uživatel {{ current_user.id }}
             </span>
-
-            <a href="/"
-               class="btn btn-outline-secondary btn-sm px-3">
-
+            <a href="/" class="btn btn-outline-secondary btn-sm px-3">
                 Vytvoření leadu
-
             </a>
-
-            <a href="/leads"
-               class="btn btn-primary btn-sm px-3">
-
+            <a href="/leads" class="btn btn-primary btn-sm px-3">
                 Moje leady
-
             </a>
-
-            <a href="/logout"
-               class="btn btn-outline-danger btn-sm px-3">
-
+            <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
                 Odhlásit
-
             </a>
-
         </div>
 
     </div>
-
 </nav>
 
 <div class="container py-5">
-
     <div class="row justify-content-center">
-
         <div class="col-lg-10">
-
             <div class="detail-card">
 
-                <!-- HEADER -->
                 <div class="detail-header">
-
                     <div class="d-flex justify-content-between align-items-center">
-
                         <div>
-
-                            <h2 class="fw-bold mb-1">
-                                Lead #{{ lead.id }}
-                            </h2>
-
-                            <div class="opacity-75">
-                                Detail zákazníka
-                            </div>
-
+                            <h2 class="lead-id-title mb-1">Lead #{{ lead.id }}</h2>
+                            <div class="text-muted fw-medium" style="font-size: 15px;">Detail hodnoceného zákazníka</div>
                         </div>
-
                         <div class="text-end">
-
-                            <div class="small opacity-75">
-                                Vytvořeno
-                            </div>
-
-                            <div class="fw-semibold">
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Vytvořeno</div>
+                            <div class="fw-bold text-dark mt-1" style="font-size: 15px;">
                                 {{ lead.created_at.strftime('%d.%m.%Y %H:%M') }}
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
 
                 {% set translations = {
-
                     "trigger": {
                         "pise_mail": "Píše e-mail / Webový formulář",
                         "jen_vola": "Pouze telefonuje",
                         "navsteva_prodejny": "Osobní návštěva prodejny"
                     },
-
                     "intent": {
                         "nevi_co_chce": "Neví, co přesně chce",
                         "musi_budget": "Musí se vejít do budgetu",
                         "porovnava_konkurenci": "Porovnává s konkurencí",
                         "ma_vybrano": "Má vybraný konkrétní model"
                     },
-
                     "activity": {
                         "pta_se_na_detaily": "Ptá se na technické detaily",
                         "testovaci_jizda": "Má zájem o testovací jízdu",
@@ -216,295 +260,187 @@
                         "zustatkova_hodnota": "Zajímá ho zůstatková hodnota",
                         "prohlizi_interier": "Prohlíží si interiér"
                     },
-
                     "config": {
                         "bez_konfigurace": "Zatím bez konfigurace",
                         "chce_poradit": "Chce poradit s konfigurací od nuly",
                         "chce_doladit": "Chce pouze doladit stávající konfiguraci",
                         "pripravena": "Má připravenou hotovou konfiguraci"
                     },
-
                     "budget": {
                         "nedostatecnony": "Nedostatečný (chce model mimo možnosti)",
                         "presne_definovany": "Přesně definovaný rozpočet",
                         "realny_rezerva": "Reálný rozpočet s rezervou",
                         "pripraven_financovat": "Předem schválen financovat"
                     },
-
                     "finance": {
                         "hotovost": "Hotovost",
                         "klasicky_uver": "Klasický úvěr",
                         "operativni_leasing": "Operativní leasing",
                         "firem_flotila": "Firemní flotila"
                     },
-
                     "timing": {
                         "jen_se_divam": "Jen se dívá / zjišťuje",
                         "pristi_rok": "6 a více měsíců",
                         "do_3_mesicu": "Do 3 měsíců",
                         "chci_ihned": "Chce auto ihned (skladovku)"
                     },
-
                     "competition": {
                         "dlouha_lhuta": "Dlouhá čekací lhůta (6+ měs.)",
                         "bezna_lhuta": "Běžná čekací lhůta (do 3 měs.)",
                         "skladovy_vuz": "Skladový vůz (ihned)"
                     }
-
                 } %}
-                <!-- BODY -->
+
                 <div class="card-body p-4">
 
-                    <!-- TOP INFO -->
-                    <div class="row g-3 mb-4">
-
+                    <div class="row g-3 mb-5">
                         <div class="col-md-4">
-
-                            <div class="info-box">
-
-                                <div class="info-label">
-                                    Zákazník
+                            <div class="info-box d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="info-label"><i class="bi bi-person"></i> Zákazník</div>
+                                    <div class="fs-3 fw-bold text-dark">{{ lead.client_name }}</div>
                                 </div>
-
-                                <div class="fs-3 fw-bold">
-                                    {{ lead.client_name }}
+                                <div class="mt-3 pt-2 border-top text-muted small fw-medium">
+                                    Poptávaný vůz: <span class="text-dark fw-bold">{{ lead.model }}</span>
                                 </div>
-
                             </div>
-
                         </div>
 
                         <div class="col-md-4">
-
-                            <div class="info-box">
-
-                                <div class="d-flex justify-content-between">
-
-                                    <div class="info-label">
-                                        Score
+                            <div class="info-box d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="info-label mb-0"><i class="bi bi-cpu"></i> AI Score</div>
+                                        <span class="fw-extrabold text-dark fs-5">{{ lead.score }}/100</span>
                                     </div>
-
-                                    <strong>
-                                        {{ lead.score }}/100
-                                    </strong>
-
+                                    <div class="progress mt-3">
+                                        {% if lead.score >= 70 %}
+                                            <div class="progress-bar bg-success" style="width: {{ lead.score }}%"></div>
+                                        {% elif lead.score >= 40 %}
+                                            <div class="progress-bar bg-warning" style="width: {{ lead.score }}%"></div>
+                                        {% else %}
+                                            <div class="progress-bar bg-info" style="width: {{ lead.score }}%"></div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-
-                                <div class="progress mt-3">
-
-                                    {% if lead.score >= 70 %}
-
-                                        <div class="progress-bar bg-danger"
-                                             style="width: {{ lead.score }}%">
-                                        </div>
-
-                                    {% elif lead.score >= 40 %}
-
-                                        <div class="progress-bar bg-warning"
-                                             style="width: {{ lead.score }}%">
-                                        </div>
-
-                                    {% else %}
-
-                                        <div class="progress-bar bg-info"
-                                             style="width: {{ lead.score }}%">
-                                        </div>
-
-                                    {% endif %}
-
-                                </div>
-
+                                <div class="text-muted small fw-medium mt-2">Pravděpodobnost úspěchu</div>
                             </div>
-
                         </div>
 
                         <div class="col-md-4">
+                            <div class="info-box d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="info-label">
+                                        <i class="bi bi-bar-chart-steps"></i> Stav & Výsledek
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center mt-2">
 
-                            <div class="info-box">
+                                        {% if lead.status == "HOT" %}
+                                            <span class="status-pill status-hot">
+                                                <i class="bi bi-fire"></i> HOT
+                                            </span>
+                                        {% elif lead.status == "WARM" %}
+                                            <span class="status-pill status-warm">
+                                                <i class="bi bi-thermometer-half"></i> WARM
+                                            </span>
+                                        {% else %}
+                                            <span class="status-pill status-cold">
+                                                <i class="bi bi-snow"></i> COLD
+                                            </span>
+                                        {% endif %}
 
-                                <div class="info-label mb-2">
-                                    Stav leadu
+                                        {% if lead.won == True %}
+                                            <span class="status-pill outcome-won">
+                                                <i class="bi bi-check-circle-fill"></i> Úspěch
+                                            </span>
+                                        {% elif lead.won == False %}
+                                            <span class="status-pill outcome-lost">
+                                                <i class="bi bi-x-circle-fill"></i> Neúspěch
+                                            </span>
+                                        {% else %}
+                                            <span class="status-pill outcome-pending">
+                                                <i class="bi bi-clock-history"></i> Otevřený
+                                            </span>
+                                        {% endif %}
+
+                                    </div>
                                 </div>
-
-                                {% if lead.status == "HOT" %}
-
-                                    <span class="badge bg-danger fs-6">
-                                        HOT
-                                    </span>
-
-                                {% elif lead.status == "WARM" %}
-
-                                    <span class="badge bg-warning text-dark fs-6">
-                                        WARM
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge bg-info fs-6">
-                                        COLD
-                                    </span>
-
-                                {% endif %}
-
-                                <div class="mt-3">
-
-                                    {% if lead.won == True %}
-                                        <span class="badge bg-success">
-                                            Úspěšný obchod
-                                        </span>
-
-                                    {% elif lead.won == False %}
-                                        <span class="badge bg-danger">
-                                            Neúspěšný obchod
-                                        </span>
-
-                                    {% else %}
-                                        <span class="badge bg-secondary">
-                                            Nevyhodnoceno
-                                        </span>
-                                    {% endif %}
-
-                                </div>
-
                             </div>
-
                         </div>
-
                     </div>
 
-                    <!-- DETAIL -->
-                    <h4 class="section-title mb-4">
-                        Detail leadu
-                    </h4>
-
+                    <h4 class="section-title mb-4">Vstupní parametry a analýza</h4>
                     <div class="row g-3">
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Typ kontaktu</div>
-                                <div class="info-value">
-                                    {{ translations.trigger[lead.trigger] }}
-                                </div>
+                                <div class="info-value">{{ translations.trigger[lead.trigger] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Fáze výběru</div>
-                                <div class="info-value">
-                                    {{ translations.intent[lead.intent] }}
-                                </div>
+                                <div class="info-value">{{ translations.intent[lead.intent] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Úroveň zájmu</div>
-                                <div class="info-value">
-                                    {{ translations.activity[lead.activity] }}
-                                </div>
+                                <div class="info-value">{{ translations.activity[lead.activity] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Konfigurace</div>
-                                <div class="info-value">
-                                    {{ translations.config[lead.config] }}
-                                </div>
+                                <div class="info-value">{{ translations.config[lead.config] }}</div>
                             </div>
                         </div>
-
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Rozpočet</div>
-                                <div class="info-value">
-                                    {{ translations.budget[lead.budget] }}
-                                </div>
+                                <div class="info-value">{{ translations.budget[lead.budget] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Financování</div>
-                                <div class="info-value">
-                                    {{ translations.finance[lead.finance] }}
-                                </div>
+                                <div class="info-value">{{ translations.finance[lead.finance] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Timing</div>
-                                <div class="info-value">
-                                    {{ translations.timing[lead.timing] }}
-                                </div>
+                                <div class="info-value">{{ translations.timing[lead.timing] }}</div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="info-box">
                                 <div class="info-label">Dostupnost modelu</div>
-                                <div class="info-value">
-                                    {{ translations.competition[lead.competition] }}
-                                </div>
+                                <div class="info-value">{{ translations.competition[lead.competition] }}</div>
                             </div>
                         </div>
-
                     </div>
 
-
-                    <!-- BUTTONS -->
-                    <div class="d-flex gap-2 mt-5">
-
-                        <a href="/leads"
-                           class="btn btn-outline-secondary">
-
-                            ← Zpět
-
+                    <div class="d-flex align-items-center gap-2 mt-5 pt-3 border-top">
+                        <a href="/leads" class="btn btn-outline-secondary-custom me-auto">
+                            ← Zpět na seznam
                         </a>
 
-                        <form action="/update-lead/{{ lead.id }}"
-                              method="POST">
-
-                            <input type="hidden"
-                                   name="won"
-                                   value="true">
-
-                            <button class="btn btn-success">
-
-                                Úspěch
-
-                            </button>
-
+                        <form action="/update-lead/{{ lead.id }}" method="POST" class="m-0">
+                            <input type="hidden" name="won" value="true">
+                            <button class="btn btn-success-custom">Označit jako úspěch</button>
                         </form>
 
-                        <form action="/update-lead/{{ lead.id }}"
-                              method="POST">
-
-                            <input type="hidden"
-                                   name="won"
-                                   value="false">
-
-                            <button class="btn btn-danger">
-
-                                Neúspěch
-
-                            </button>
-
+                        <form action="/update-lead/{{ lead.id }}" method="POST" class="m-0">
+                            <input type="hidden" name="won" value="false">
+                            <button class="btn btn-danger-custom">Označit jako neúspěch</button>
                         </form>
-
                     </div>
 
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 </body>

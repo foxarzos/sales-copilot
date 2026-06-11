@@ -5,41 +5,67 @@
     <title>Lead scoring</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Vynutí scrollbar, aby neodskakovalo logo */
+        html {
+            overflow-y: scroll;
+        }
 
         body {
             background: #F8FAFC;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+            color: #0F172A;
         }
 
         /* NAVBAR */
         .navbar {
-            background: white;
-            border-bottom: 1px solid #E2E8F0;
+            background: white !important;
+            border-bottom: 1px solid #E2E8F0 !important;
+            padding-top: 12px !important;
+            padding-bottom: 12px !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
         }
 
         .navbar-brand {
+            font-size: 18px !important;
+            font-weight: 700 !important;
             color: #0F172A !important;
-            font-size: 20px;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .navbar .btn {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            padding: 6px 14px !important;
+            border-radius: 8px !important;
         }
 
         /* CARDS */
         .card {
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.02), 0 10px 15px -3px rgba(15, 23, 42, 0.03) !important;
+            background: white;
         }
 
         .card-header {
-            background: white;
-            border-bottom: 1px solid #F1F5F9;
-            border-radius: 16px 16px 0 0 !important;
+            background: white !important;
+            border-bottom: 1px solid #F1F5F9 !important;
+            border-radius: 20px 20px 0 0 !important;
         }
 
         /* BUTTONS */
         .btn-primary {
             background: #2563EB;
             border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .btn-primary:hover {
@@ -63,98 +89,97 @@
         }
 
         /* FORM */
+        .form-label {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748B !important;
+            margin-bottom: 8px;
+        }
+
         .form-control,
         .form-select {
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #CBD5E1;
+            padding: 11px 16px;
+            font-size: 15px;
+            color: #334155;
+            background-color: #FAFAFA;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus,
         .form-select:focus {
-            box-shadow: none;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
             border-color: #2563EB;
+            color: #0F172A;
+        }
+
+        /* Obarvení detailů v postranním panelu */
+        .bg-success-subtle { background-color: #DCFCE7 !important; color: #15803D !important; }
+        .bg-warning-subtle { background-color: #FEF3C7 !important; color: #D97706 !important; }
+        .bg-light { background-color: #F1F5F9 !important; color: #64748B !important; }
+
+        .text-warning-dark { color: #B45309 !important; }
+
+        /* Floating button */
+        .position-fixed .btn-primary {
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .position-fixed .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45) !important;
         }
 
     </style>
 </head>
-<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm py-3">
+<body class="bg-light">
 
-    <div class="container">
+<nav class="navbar navbar-expand-lg">
+    <div class="container d-flex justify-content-between align-items-center">
 
-        <!-- LOGO -->
-        <a href="/" class="navbar-brand d-flex align-items-center gap-2 fw-bold">
-
+        <a href="/" class="navbar-brand d-flex align-items-center gap-2">
             <svg width="34" height="34" viewBox="0 0 60 60">
-                <circle cx="20" cy="30" r="8"
-                        stroke="#38BDF8"
-                        stroke-width="3"
-                        fill="none"/>
-
-                <circle cx="40" cy="30" r="8"
-                        stroke="#22C55E"
-                        stroke-width="3"
-                        fill="none"/>
-
-                <line x1="28"
-                      y1="30"
-                      x2="32"
-                      y2="30"
-                      stroke="#2563EB"
-                      stroke-width="3"/>
+                <circle cx="20" cy="30" r="8" stroke="#38BDF8" stroke-width="3" fill="none"/>
+                <circle cx="40" cy="30" r="8" stroke="#22C55E" stroke-width="3" fill="none"/>
+                <line x1="28" y1="30" x2="32" y2="30" stroke="#2563EB" stroke-width="3"/>
             </svg>
-
             <span>SalesCopilot</span>
-
         </a>
 
-        <!-- RIGHT SIDE -->
         <div class="d-flex align-items-center gap-2 ms-auto">
-
-            <!-- USER -->
             <span class="text-muted small me-2">
                 Přihlášený uživatel {{ current_user.id }}
             </span>
-
-            <!-- LEADS -->
-            <a href="/leads"
-               class="btn btn-primary btn-sm px-3">
-
-                Moje leady
-
-            </a>
-
-            <!-- LOGOUT -->
-            <a href="/logout"
-               class="btn btn-outline-secondary btn-sm px-3">
-
-                Odhlásit
-
-            </a>
-            <a href="/landing" class="btn btn-outline-secondary btn-sm">
+            <a href="/landing" class="btn btn-outline-secondary btn-sm px-3">
                 O produktu
             </a>
-
+            <a href="/leads" class="btn btn-primary btn-sm px-3">
+                Moje leady
+            </a>
+            <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
+                Odhlásit
+            </a>
         </div>
 
     </div>
-
 </nav>
 
-<body class="bg-light">
-
-<div class="container mt-2">
+<div class="container mt-4 mb-5">
 
     <div class="card shadow">
 
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
-            <div class="row">
+            <div class="row g-4">
 
             <div class="col-md-8">
                 <form method="POST">
 
-                    <!-- ID ZÁKAZNÍKA -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Příjmení zákazníka</label>
                         <input type="text" name="client_name" class="form-control" placeholder="Zadejte příjmení zákazníka">
@@ -198,10 +223,45 @@
                                 <option value="Seat|Leon">Leon ST</option>
                                 <option value="Seat|Ateca">Ateca</option>
                             </optgroup>
+
+                            <optgroup label="MG">
+                                <option value="MG|3">3</option>
+                                <option value="MG|ZS">ZS</option>
+                                <option value="MG|HS">HS</option>
+                                <option value="MG|MG3 Hybrid+">3 Hybrid+</option>
+                                <option value="MG|ZS Hybrid+">ZS Hybrid+</option>
+                                <option value="MG|HS Hybrid+">HS Hybrid+</option>
+                                <option value="MG|HS Plug-in hybrid">HS Plug-in hybrid</option>
+                                <option value="MG|4 EV">4 EV Urban</option>
+                                <option value="MG|S5 EV">S5 EV</option>
+                                <option value="MG|Cyberster">Cyberster</option>
+                            </optgroup>
+
+                            <optgroup label="OPEL">
+                                <option value="Opel|Corsa">Corsa</option>
+                                <option value="Opel|Nova Astra">Astra</option>
+                                <option value="Opel|Nova Astra Sports Tourer">Astra Sports Tourer</option>
+                                <option value="Opel|Mokka">Mokka</option>
+                                <option value="Opel|Frontera">Frontera</option>
+                                <option value="Opel|Grandland">Grandland</option>
+                                <option value="Opel|Combo">Combo</option>
+                                <option value="Opel|Zafira">Zafira</option>
+                                <option value="Opel|Combo Van">Combo Van</option>
+                                <option value="Opel|Vivaro">Vivaro</option>
+                                <option value="Opel|Movano">Movano</option>
+                            </optgroup>
+
+                            <optgroup label="LEAPMOTOR">
+                                <option value="Leapmotor|T03">T03</option>
+                                <option value="Leapmotor|C10">C10</option>
+                                <option value="Leapmotor|B10">B10</option>
+                                <option value="Leapmotor|B05">B05</option>
+                                <option value="Leapmotor|B03X">B03X</option>
+                            </optgroup>
+
                         </select>
                     </div>
 
-                    <!-- TYP KONTRAKTU -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Typ kontaktu</label>
                         <select name="contract_type" class="form-select" required>
@@ -212,7 +272,6 @@
                         </select>
                     </div>
 
-                    <!-- FÁZE VÝBĚRU -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Fáze výběru</label>
                         <select name="selection_stage" class="form-select" required>
@@ -224,12 +283,11 @@
                         </select>
                     </div>
 
-                    <!-- ÚROVEŇ ZÁJMU -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Úroveň zájmu</label>
                         <select name="interest_level" class="form-select" required>
                             <option value="" selected disabled>Vyberte úroveň zájmu...</option>
-                            <option value="pta_se_na_detaily">Ptá se na technické detaily</option>
+                            <option value="pta_se_na_detaily">Zajímá se o technické detaily</option>
                             <option value="testovaci_jizda">Má zájem o testovací jízdu</option>
                             <option value="prohlizi_interier">Prohlíží si interiér</option>
                             <option value="zustatkova_hodnota">Zajímá ho zůstatková hodnota</option>
@@ -237,7 +295,6 @@
                         </select>
                     </div>
 
-                    <!-- PŘIPRAVENOST KONFIGURACE -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Připravenost konfigurace</label>
                         <select name="config" class="form-select" required>
@@ -249,7 +306,6 @@
                         </select>
                     </div>
 
-                    <!-- ROZPOČET -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Rozpočet</label>
                         <select name="budget" class="form-select" required>
@@ -261,7 +317,6 @@
                         </select>
                     </div>
 
-                    <!-- FINANCOVÁNÍ -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Způsob financování</label>
                         <select name="finance" class="form-select" required>
@@ -273,7 +328,6 @@
                         </select>
                     </div>
 
-                    <!-- ČASOVÝ HORIZONT -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Timing</label>
                         <select name="timing" class="form-select" required>
@@ -281,17 +335,16 @@
                             <option value="jen_se_divam">Jen se dívá / zjišťuje</option>
                             <option value="pristi_rok">6 a více měsíců</option>
                             <option value="do_3_mesicu">Do 3 měsíců</option>
-                            <option value="chci_ihned">Chce auto ihned (skladovku)</option>
+                            <option value="chci_ihned">Chce vozidlo ihned (skladovku)</option>
                         </select>
                     </div>
 
-                    <!-- DOSTUPNOST MODELU -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold text-secondary">Dostupnost modelu</label>
                         <select name="availability" class="form-select" required>
                             <option value="" selected disabled>Dostupnost vozu?...</option>
-                            <option value="dlouha_lhuta">Dlouhá čekací lhůta (6+ měs.)</option>
-                            <option value="bezna_lhuta">Běžná čekací lhůta (do 3 měs.)</option>
+                            <option value="dlouha_lhuta">Dlouhá čekací lhůta (6+ měsíců)</option>
+                            <option value="bezna_lhuta">Běžná čekací lhůta (do 3 měsíců)</option>
                             <option value="skladovy_vuz">Skladový vůz (ihned)</option>
                         </select>
                     </div>

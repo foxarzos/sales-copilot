@@ -98,22 +98,22 @@ def calculate_lead_data(form_data):
 
     if dostupnost_modelu == "dlouha_lhuta" and casovy_horizont in ["chci_ihned", "do_3_mesicu"]:
         doporuceni.append(
-            "<b>Záchrana obchodu:</b> Čekací doba z výroby je moc dlouhá a hrozí, že klient půjde ke konkurenci. Okamžitě mu předložte alternativu – nabídněte předváděcí vůz, roční auto z programu nebo skladovku v podobné výbavě.")
+            "<b>Záchrana obchodu:</b> Čekací doba je moc dlouhá a hrozí, že klient odejde ke konkurenci. Okamžitě mu předložte alternativu – nabídněte předváděcí vůz, roční auto z programu nebo skladovku v podobné výbavě.")
 
     if pripravenost_konfigurace in ["chce_poradit", "chce_doladit"]:
         doporuceni.append(
-            "<b>Osobní konfigurace:</b> Klient si není jistý výbavou. Neřešte to přes e-mail! Pozvěte ho na kávu ke konfigurátoru na showroomu. Společná konfigurace vozu tvoří emoci a dramaticky zvyšuje šanci, že si připlatí za lepší výbavu.")
+            "<b>Osobní konfigurace:</b> Klient si není jistý výbavou. Neřešte to přes e-mail. Pozvěte ho na kávu ke konfigurátoru na showroomu. Společná konfigurace vozu tvoří emoci a zvyšuje šanci, že si připlatí za lepší výbavu.")
 
     if uroven_zajmu == "testovaci_jizda":
         doporuceni.append(
-            "<b>Testovací jízda:</b> Auto prodávají emoce za volantem. Vaším jediným cílem je teď dostat klienta do vozu. Dejte mu na výběr ze 2 konkrétních termínů a zarezervujte jízdu nejpozději do 48 hodin.")
+            "<b>Testovací jízda:</b> Emoce prodávají. Vaším jediným cílem je teď dostat klienta do vozu. Dejte mu na výběr ze dvou konkrétních termínů a zarezervujte jízdu nejpozději do 48 hodin.")
 
     if status == "HOT":
         doporuceni.append(
             "<b>🔥Closing priorita:</b> Klient je připraven koupit. Úkolem je vyřešit poslední administrativu (financování, protiúčet). Buďte proaktivní, udržujte kontakt každých 48 hodin a uzavřete smlouvu dřív, než nákupní emoce ochladne.")
     elif status == "WARM":
         doporuceni.append(
-            "<b>🟡Aktivní Follow-up:</b> Klient má zájem, ale srovnává nabídky a přemýšlí. Pošlete mu kalkulaci/konfiguraci a rovnou si na konci hovoru domluvte PŘESNÝ čas dalšího kontaktování. Nenechávejte rozhodnutí na něm.")
+            "<b>🟡Aktivní Follow-up:</b> Klient má zájem, ale srovnává nabídky a přemýšlí. Pošlete mu kalkulaci/konfiguraci a rovnou si na konci hovoru domluvte přesný čas dalšího kontaktování. Nenechávejte rozhodnutí na něm.")
     elif status == "COLD":
         doporuceni.append(
             "<b>❄️Budování vztahu:</b> Klient se teprve rozhlíží. Netlačte na něj. Nastavte si připomenutí kontaktování do kalendáře na další měsíc a ozvěte se mu s nějakou přidanou hodnotou (např. pozvánka na testovací dny nebo nový akční ceník).")

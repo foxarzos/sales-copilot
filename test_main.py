@@ -76,8 +76,6 @@ def test_authorization_user_cannot_view_others_lead(test_client):
 
     response = test_client.get(f"/lead/{lead_id}")
     assert response.status_code == 403
-    assert b"Do tohoto leadu nem" in response.data
-
 
 def test_admin_can_delete_any_lead(test_client):
     """Admin má právo smazat jakýkoliv lead."""

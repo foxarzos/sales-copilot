@@ -128,20 +128,30 @@ def home():
 @app.route("/leads")
 @login_required
 def leads():
+    sort_by = request.args.get('sort', 'newest')
+
     if current_user.role == "admin":
-        query = db.select(Lead).order_by(Lead.id.desc())
+        query = db.select(Lead)
     else:
-        query = db.select(Lead).where(Lead.created_by == current_user.id).order_by(Lead.id.desc())
+        query = db.select(Lead).where(Lead.created_by == current_user.id)
+
+    if sort_by == "score":
+        query = query.order_by(Lead.score.desc())
+    elif sort_by == "alphabetical":
+        query = query.order_by(Lead.client_name.asc())
+    else:
+        query = query.order_by(Lead.id.desc())
 
     all_leads = db.session.scalars(query).all()
-    return render_template("leads.html", leads=all_leads)
+
+    return render_template("leads.html", leads=all_leads, current_sort=sort_by)
 
 @app.route("/lead/<int:id>")
 @login_required
 def lead_detail(id):
     lead = db.get_or_404(Lead, id)
     if current_user.role != "admin" and lead.created_by != current_user.id:
-        return "Do tohoto leadu nemáš přístup.", 403
+        return render_template("403.html"), 403
     return render_template("lead_detail.html", lead=lead)
 
 @app.route("/update-lead/<int:id>", methods=["POST"])
@@ -150,7 +160,7 @@ def update_lead(id):
     lead = db.get_or_404(Lead, id)
 
     if current_user.role != "admin" and lead.created_by != current_user.id:
-        return "Nemáš oprávnění upravovat tento lead.", 403
+        return render_template("403.html"), 403
 
     result = request.form.get("won")
 
@@ -169,7 +179,7 @@ def delete_lead(id):
     lead = db.get_or_404(Lead, id)
 
     if current_user.role != "admin" and lead.created_by != current_user.id:
-        return "Nemáš oprávnění smazat tento lead.", 403
+        return render_template("403.html"), 403
 
     db.session.delete(lead)
     db.session.commit()
