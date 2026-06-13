@@ -201,6 +201,7 @@
         </div>
 
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> <input type="hidden" name="won" value="false">
 
             {% if error %}
                 <div class="alert alert-danger d-flex align-items-center gap-2 py-2.5 px-3 border-0 rounded-3 small mb-4" role="alert">

@@ -300,6 +300,7 @@
                                 </a>
 
                                 <form action="/delete-lead/{{ lead.id }}" method="POST" class="m-0">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> <input type="hidden" name="won" value="false">
                                     <button type="submit"
                                             class="btn-action-delete"
                                             onclick="return confirm('Opravdu smazat lead?')">

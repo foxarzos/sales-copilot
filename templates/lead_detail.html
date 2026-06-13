@@ -254,7 +254,7 @@
                         "ma_vybrano": "Má vybraný konkrétní model"
                     },
                     "activity": {
-                        "pta_se_na_detaily": "Ptá se na technické detaily",
+                        "pta_se_na_detaily": "Zajímá se o technické detaily",
                         "testovaci_jizda": "Má zájem o testovací jízdu",
                         "tco": "Řeší celkové náklady na vlastnictví (TCO)",
                         "zustatkova_hodnota": "Zajímá ho zůstatková hodnota",
@@ -368,7 +368,41 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100" style="border-radius: 16px !important;">
+                            <div class="card-body p-4">
+                                <h6 class="text-muted small fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px;">Shrnutí leadu</h6>
+                                <div class="p-3 rounded-3 {% if lead.status == 'HOT' %}bg-success-subtle text-dark{% elif lead.status == 'WARM' %}bg-warning-subtle text-dark{% else %}bg-light text-dark{% endif %}">
+                                    {% if lead.ai_summary %}
+                                        <p class="mb-0 small fw-semibold" style="line-height: 1.6;">{{ lead.ai_summary }}</p>
+                                    {% else %}
+                                        <p class="mb-0 small text-muted italic">Pro tento lead nebylo vygenerováno žádné specifické AI shrnutí.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100" style="border-radius: 16px !important;">
+                            <div class="card-header bg-white border-bottom border-light py-3 px-4 d-flex justify-content-between align-items-center">
+                                <h6 class="text-muted small fw-bold text-uppercase mb-0" style="letter-spacing: 0.5px;">Prodejní kroky AI</h6>
+                                <span id="detail-tip-counter" class="badge bg-white text-secondary rounded-pill border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 600;">1 / 1</span>
+                            </div>
+                            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                                <div class="p-3 bg-light rounded-3 d-flex align-items-center text-dark" style="min-height: 110px; border: 1px solid rgba(0,0,0,0.03);">
+                                    <div id="detail-tip-text-container" class="w-100" style="font-size: 0.95rem; line-height: 1.5;">
+                                        Žádná uložená doporučení.
+                                    </div>
+                                </div>
+                                <button id="detail-next-tip-btn" class="btn btn-dark w-100 mt-3 btn-sm fw-bold rounded-2 py-2 text-uppercase tracking-wide" style="font-size: 0.75rem; letter-spacing: 0.5px;" type="button">
+                                    Zobrazit další tip ▶
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     <h4 class="section-title mb-4">Vstupní parametry a analýza</h4>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -420,18 +454,19 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="d-flex align-items-center gap-2 mt-5 pt-3 border-top">
                         <a href="/leads" class="btn btn-outline-secondary-custom me-auto">
                             ← Zpět na seznam
                         </a>
 
                         <form action="/update-lead/{{ lead.id }}" method="POST" class="m-0">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="won" value="true">
                             <button class="btn btn-success-custom">Označit jako úspěch</button>
                         </form>
 
                         <form action="/update-lead/{{ lead.id }}" method="POST" class="m-0">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="won" value="false">
                             <button class="btn btn-danger-custom">Označit jako neúspěch</button>
                         </form>
@@ -442,6 +477,37 @@
         </div>
     </div>
 </div>
+<script>
+        const rawTips = {{ lead.ai_tips | tojson if lead.ai_tips else '""' }};
 
+        let detailTips = rawTips ? rawTips.split('|') : [];
+        let currentTipIndex = 0;
+
+        const tipContainer = document.getElementById('detail-tip-text-container');
+        const nextBtn = document.getElementById('detail-next-tip-btn');
+        const counter = document.getElementById('detail-tip-counter');
+
+        function updateTip() {
+            if (detailTips.length > 0) {
+                tipContainer.innerHTML = detailTips[currentTipIndex];
+                counter.innerText = `${currentTipIndex + 1} / ${detailTips.length}`;
+            } else {
+                tipContainer.innerHTML = "Žádná uložená doporučení.";
+                counter.innerText = "0 / 0";
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                if (detailTips.length > 0) {
+                    currentTipIndex = (currentTipIndex + 1) % detailTips.length;
+                    updateTip();
+                }
+            });
+        }
+
+        updateTip();
+    </script>
 </body>
 </html>

@@ -5,11 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, timezone
 from config import Config
 from scoring import calculate_lead_data
+from flask_wtf.csrf import CSRFProtect
 import json
 import os
+from ai_service import ai_strategy
 
 app = Flask(__name__)
 app.config.from_object(Config)
+csrf = CSRFProtect(app)
 
 db = SQLAlchemy(app)
 
@@ -29,7 +32,8 @@ class Lead(db.Model):
     timing = db.Column(db.String(50))
     status = db.Column(db.String(20))
     score = db.Column(db.Integer)
-
+    ai_summary = db.Column(db.Text, nullable=True)
+    ai_tips = db.Column(db.Text, nullable=True)
     won = db.Column(db.Boolean, nullable=True)
 
     created_by = db.Column(db.String(100))
@@ -97,6 +101,8 @@ def home():
     score = 0
     status = None
     doporuceni = []
+    ai_summary = None
+    ai_tips = []
 
     if request.method == "POST":
         jmeno_zakaznika = request.form.get("client_name")
@@ -120,10 +126,40 @@ def home():
             created_by=current_user.id
         )
 
+        try:
+            # raise Exception("Simulovaný limit kvóty")
+            raw_ai_text = ai_strategy(lead)
+
+            if raw_ai_text:
+                lines = [line.strip() for line in raw_ai_text.split('\n') if line.strip()]
+
+                if lines:
+                    ai_summary = lines[0]
+                    ai_tips = lines[1:]
+                else:
+                    ai_summary = "Systémové vyhodnocení leadu (AI nedostupná):"
+                    ai_tips = doporuceni
+            else:
+                ai_summary = "Systémové vyhodnocení leadu (AI nedostupná):"
+                ai_tips = doporuceni
+
+        except Exception as e:
+            print(f"⚠️ Gemini API Quota Limit hit ({e}). Přepínám na statický fallback.")
+
+            if doporuceni:
+                ai_summary = doporuceni[0]
+                ai_tips = doporuceni[1:]
+            else:
+                ai_summary = f"Systémové vyhodnocení ({status} lead - Limit AI vyčerpán):"
+                ai_tips = []
+
+        lead.ai_summary = ai_summary
+        lead.ai_tips = "|".join(ai_tips) if ai_tips else ""
+
         db.session.add(lead)
         db.session.commit()
 
-    return render_template("index.html", score=score, status=status, doporuceni=doporuceni)
+    return render_template("index.html", score=score, status=status, doporuceni=doporuceni,ai_summary=ai_summary,ai_tips=ai_tips)
 
 @app.route("/leads")
 @login_required

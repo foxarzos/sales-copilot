@@ -94,28 +94,58 @@ def calculate_lead_data(form_data):
 
     if casovy_horizont == "chci_ihned" and dostupnost_modelu == "skladovy_vuz":
         doporuceni.append(
-            "<b>Okamžitá rezervace:</b> Zákazník spěchá a vůz je skladem. Využijte toho! Vytvořte FOMO efekt a nabídněte mu okamžitou rezervaci vozu.")
+            "⚡ OKAMŽITÁ REZERVACE - Zákazník spěchá a vůz je skladem. Využijte toho! Vytvořte FOMO efekt a nabídněte mu okamžitou rezervaci vozu.")
 
     if dostupnost_modelu == "dlouha_lhuta" and casovy_horizont in ["chci_ihned", "do_3_mesicu"]:
         doporuceni.append(
-            "<b>Záchrana obchodu:</b> Čekací doba je moc dlouhá a hrozí, že klient odejde ke konkurenci. Okamžitě mu předložte alternativu – nabídněte předváděcí vůz, roční auto z programu nebo skladovku v podobné výbavě.")
+            "🛡️ ZÁCHRANA OBCHODU - Čekací doba je moc dlouhá a hrozí, že klient odejde ke konkurenci. Okamžitě mu předložte alternativu – nabídněte předváděcí vůz, roční auto z programu nebo skladovku v podobné výbavě.")
 
     if pripravenost_konfigurace in ["chce_poradit", "chce_doladit"]:
         doporuceni.append(
-            "<b>Osobní konfigurace:</b> Klient si není jistý výbavou. Neřešte to přes e-mail. Pozvěte ho na kávu ke konfigurátoru na showroomu. Společná konfigurace vozu tvoří emoci a zvyšuje šanci, že si připlatí za lepší výbavu.")
+            "☕ OSOBNÍ KONFIGURACE - Klient si není jistý výbavou. Neřešte to přes e-mail. Pozvěte ho na kávu ke konfigurátoru na showroomu. Společná konfigurace vozu tvoří emoci a zvyšuje šanci, že si připlatí za lepší výbavu.")
 
     if uroven_zajmu == "testovaci_jizda":
         doporuceni.append(
-            "<b>Testovací jízda:</b> Emoce prodávají. Vaším jediným cílem je teď dostat klienta do vozu. Dejte mu na výběr ze dvou konkrétních termínů a zarezervujte jízdu nejpozději do 48 hodin.")
+            "🏎️ TESTOVACÍ JÍZDA - Emoce prodávají. Vaším jediným cílem je teď dostat klienta do vozu. Dejte mu na výběr ze dvou konkrétních termínů a zarezervujte jízdu nejpozději do 48 hodin.")
 
     if status == "HOT":
+        doporuceni.insert(0,
+                          "🔥 CLOSING PRIORITA - Klient je připraven koupit. Úkolem je vyřešit poslední administrativu (financování, protiúčet). Buďte proaktivní, udržujte kontakt každých 48 hodin a uzavřete smlouvu dřív, než nákupní emoce ochladne.")
+
         doporuceni.append(
-            "<b>🔥Closing priorita:</b> Klient je připraven koupit. Úkolem je vyřešit poslední administrativu (financování, protiúčet). Buďte proaktivní, udržujte kontakt každých 48 hodin a uzavřete smlouvu dřív, než nákupní emoce ochladne.")
+            "💬 <b>Finální ujištění:</b> „Vypadá to, že jsme našli přesně to, co jste hledal. Brání nám teď ještě něco v tom, abychom rovnou vozidlo objednali/rezervovali?“")
+        doporuceni.append(
+            "💬 <b>Práce s nedostatkem:</b> „Dívám se do systému a na tento model v této barvě mám ve výrobě už jen jedno volné místo. Mám ho zablokovat na Vaše jméno, ať o něj nepřijdeme?“")
+        doporuceni.append(
+            "💬 <b>Záchrana při záseku na ceně:</b> „Ve výsledku se bavíme o rozdílu zhruba 800 Kč měsíčně na splátce. Stojí Vám těch pár set za to, abyste nemusel dělat kompromisy na další 4 roky?“")
+        doporuceni.append(
+            "💡 <b>Tip pro prodejce:</b> Jakmile položíte závěrečnou otázku k uzavření obchodu (např. 'Podepíšeme to?'), mlčte. Kdo promluví jako první, prohrává.")
+
     elif status == "WARM":
+
+        doporuceni.insert(0,
+                          "🟡 AKTIVNÍ FOLLOW-UP - Klient má zájem, ale srovnává nabídky a přemýšlí. Pošlete mu kalkulaci/konfiguraci a rovnou si na konci hovoru domluvte přesný čas dalšího kontaktování. Nenechávejte rozhodnutí na něm.")
+
         doporuceni.append(
-            "<b>🟡Aktivní Follow-up:</b> Klient má zájem, ale srovnává nabídky a přemýšlí. Pošlete mu kalkulaci/konfiguraci a rovnou si na konci hovoru domluvte přesný čas dalšího kontaktování. Nenechávejte rozhodnutí na něm.")
+            "💬 <b>Při testovací jízdě:</b> „Všimněte si teď, jak auto skvěle tlumí nerovnosti. To je přesně to, o čem jsme mluvili po telefonu. Jaký z jízdy máte pocit oproti Vašemu současnému vozu?“")
+        doporuceni.append(
+            "💬 <b>Zvládnutí námitky:</b> „Naprosto rozumím, auto se nekupuje každý den. Většinou to znamená, že si klienti nejsou jistí samotným autem, nebo ještě ladíme rozpočet. Můžu se upřímně zeptat, jak to cítíte vy?“")
+        doporuceni.append(
+            "💬 <b>Konkurence:</b> „Konkurence dělá skvělá auta, to nepopírám. Kdybyste si ale odmyslel tu cenovku a mohl si vybrat jen podle toho, ve kterém autě se cítíte lépe... které by to bylo?“")
+        doporuceni.append(
+            "💡 <b>Tip pro prodejce:</b> Pokud klient mluví o konkurenci, nikdy ji nehaňte. Spíše ho naveďte k tomu, aby si sám uvědomil, proč je vaše nabídka hodnotnější.")
+
     elif status == "COLD":
+        doporuceni.insert(0,
+                          "❄️ BUDOVÁNÍ VZTAHU – Klient se teprve rozhlíží. Netlačte na něj. Nastavte si připomenutí kontaktování do kalendáře na další měsíc a ozvěte se mu s nějakou přidanou hodnotou (např. pozvánka na testovací dny nebo nový akční ceník).")
+
         doporuceni.append(
-            "<b>❄️Budování vztahu:</b> Klient se teprve rozhlíží. Netlačte na něj. Nastavte si připomenutí kontaktování do kalendáře na další měsíc a ozvěte se mu s nějakou přidanou hodnotou (např. pozvánka na testovací dny nebo nový akční ceník).")
+            "💬 <b>Odhalení skrytých potřeb:</b> „Když si představíte svůj ideální vůz na další tři, čtyři roky, co v něm nesmí chybět?“")
+        doporuceni.append(
+            "💬 <b>Převzetí kontroly:</b> „Většina mých klientů na našich vozech nejvíce oceňuje ticho v kabině a skvělý infotainment. Jak to máte s technologiemi v autě vy, využijete je?“")
+        doporuceni.append(
+            "💬 <b>Pomalé směřování k akci:</b> „Nechci vás teď zahltit letáky a čísly. Co kdybyste se u nás příští týden na 20 minut zastavil, dáme si kávu a vy si do toho auta jenom zkusíte sednout?“")
+        doporuceni.append(
+            "💡 <b>Tip pro prodejce:</b> Poslouchejte v poměru 80/20. Klient by měl mluvit 80 % času. Vaším cílem je zjistit jeho 'bolest' (problém se starým vozem, rodina se rozrůstá, chce reprezentovat).")
 
     return score, status, doporuceni, brand, model
