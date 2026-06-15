@@ -1,4 +1,5 @@
 import os
+import time
 from dotenv import load_dotenv
 from google import genai
 
@@ -91,12 +92,29 @@ def ai_strategy(lead):
     💡 <b>Tip:</b> [Zde vymysli krátký a úderný tip pro prodejce na závěr]
     """
 
-    try:
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=prompt,
-        )
-        return response.text
-    except Exception as e:
-        print(f"Chyba při volání Gemini API: {e}")
-        raise e
+    return prompt
+
+def generate_ai_response(prompt):
+    model_name = 'gemini-2.5-flash'
+    max_retries = 3
+
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+
+            print(f"✅ [SUCCESS] AI odpověděla na {attempt + 1}. pokus.")
+
+            return response.text
+
+        except Exception as e:
+            print(f"⚠️ [AI SERVICE] Pokus {attempt + 1} selhal (chyba: {e})")
+            if attempt == max_retries - 1:
+                print(f"❌ [AI SERVICE] Vyčerpáno {max_retries} pokusů. Přepínám na fallback.")
+                raise e
+
+            wait_time = 2 ** attempt
+            print(f"⏳ [AI SERVICE] Zkouším znovu za {wait_time} s")
+            time.sleep(wait_time)

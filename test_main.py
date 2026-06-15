@@ -39,7 +39,7 @@ def test_successful_login(test_client):
     assert b"Spatne uzivatelske jmeno" not in response.data
 
 
-@patch('main.ai_strategy')
+@patch('main.generate_ai_response')
 def test_lead_scoring_logic_saves_hot_lead(mock_ai_strategy, test_client):
     """Odeslání formuláře s ideálním zákazníkem vytvoří HOT lead a uloží AI doporučení."""
 

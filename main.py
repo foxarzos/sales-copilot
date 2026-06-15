@@ -8,7 +8,7 @@ from scoring import calculate_lead_data
 from flask_wtf.csrf import CSRFProtect
 import json
 import os
-from ai_service import ai_strategy
+from ai_service import ai_strategy, generate_ai_response
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -128,7 +128,8 @@ def home():
 
         try:
             # raise Exception("Simulovaný limit kvóty")
-            raw_ai_text = ai_strategy(lead)
+            prompt = ai_strategy(lead)
+            raw_ai_text = generate_ai_response(prompt)
 
             if raw_ai_text:
                 lines = [line.strip() for line in raw_ai_text.split('\n') if line.strip()]
@@ -144,7 +145,7 @@ def home():
                 ai_tips = doporuceni
 
         except Exception as e:
-            print(f"⚠️ Gemini API Quota Limit hit ({e}). Přepínám na statický fallback.")
+            print(f"⚠️ Chyba při volání Gemini API: {e}. Přepínám na statický fallback.")
 
             if doporuceni:
                 ai_summary = doporuceni[0]
