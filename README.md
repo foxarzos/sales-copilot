@@ -4,6 +4,10 @@
 
 Aplikace je plně nasazena v cloudovém produkčním prostředí a aktivně ji využívají **3 uživatelé v reálném provozu**.
 
+**Web projektu:** [salescopilotcz.onrender.com](https://salescopilotcz.onrender.com)
+
+*(Uvnitř aplikace probíhá ostrý provoz, detailní ukázky systému naleznete níže ve vizuálním workflow).*
+
 ---
 
 ## 📷 Ukázka z aplikace (Vizuální workflow)
