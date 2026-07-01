@@ -27,7 +27,8 @@ jobs:
 
       - name: Spustit testy přes Pytest
         env:
-          FLASK_SECRET_KEY: "testovaci_klic"
+          FLASK_SECRET_KEY: "flask_test_key"
+          GEMINI_API_KEY: "gemini_test_key"
         run: |
           pytest
 
