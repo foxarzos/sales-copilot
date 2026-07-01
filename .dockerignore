@@ -1,0 +1,19 @@
+# Ignoruj lokální virtuální prostředí
+.venv/
+venv/
+env/
+
+# Ignoruj Python mezipaměť
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignoruj lokální databázi a historii Gitu
+.git/
+.github/
+instance/
+.env
+
+# Ignoruj soubory z PyCharmu
+.idea/
